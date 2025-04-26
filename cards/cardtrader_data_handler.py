@@ -1,4 +1,4 @@
-from typing import List, Dict, Any
+from typing import Any
 
 from cards.card_data import Card
 
@@ -6,7 +6,7 @@ from cards.card_data import Card
 class CardtraderDataHandler:
 
     @staticmethod
-    def parse_cards(cards: List[Dict[str, Any]]) -> List[Card]:
+    def parse_cards(cards: list[dict[str, Any]]) -> list[Card]:
         expansion_cards = []
         for card in cards:
             expansion_cards.append(Card(expansion=card['expansion'].get(f'name_en', ''),
@@ -21,14 +21,14 @@ class CardtraderDataHandler:
         return expansion_cards
 
     @staticmethod
-    def get_expansion_id(all_expansions: List[Dict[str, Any]], expansion_name):
+    def get_expansion_id(all_expansions: list[dict[str, Any]], expansion_name) -> int:
         for expansion in all_expansions:
             if expansion.get('name') == expansion_name:
                 return expansion.get('id')
         raise ValueError(f'No expansion could be found for given expansion name {expansion_name}')
 
     @staticmethod
-    def flatten_products(products) -> List[Dict[str, Any]]:
+    def flatten_products(products: dict[str, list[str, Any]]) -> list[dict[str, Any]]:
         flattened_products = []
         for sublist in list(products.values()):
             for item in sublist:
@@ -36,7 +36,7 @@ class CardtraderDataHandler:
         return flattened_products
 
     @staticmethod
-    def filter_by_language(cards: List[Card], language: str) -> List[Card]:
+    def filter_by_language(cards: list[Card], language: str) -> list[Card]:
         filtered_cards = []
         for card in cards:
             if card.language == language:
@@ -44,7 +44,7 @@ class CardtraderDataHandler:
         return filtered_cards
 
     @staticmethod
-    def filter_by_condition(cards: List[Card], condition: str) -> List[Card]:
+    def filter_by_condition(cards: list[Card], condition: str) -> list[Card]:
         filtered_cards = []
         for card in cards:
             if card.condition == condition:
@@ -52,7 +52,7 @@ class CardtraderDataHandler:
         return filtered_cards
 
     @staticmethod
-    def filter_by_collection_number(cards: List[Card], collection_number: str) -> List[Card]:
+    def filter_by_collection_number(cards: list[Card], collection_number: str) -> list[Card]:
         filtered_cards = []
         for card in cards:
             if card.collector_number == collection_number or card.collector_number == str(int(collection_number)):
@@ -60,7 +60,7 @@ class CardtraderDataHandler:
         return filtered_cards
 
     @staticmethod
-    def filter_by_foil(cards: List[Card], foil: bool) -> List[Card]:
+    def filter_by_foil(cards: list[Card], foil: bool) -> list[Card]:
         filtered_cards = []
         for card in cards:
             if card.foil == foil:
@@ -68,7 +68,7 @@ class CardtraderDataHandler:
         return filtered_cards
 
     @staticmethod
-    def get_average_cheapest_cards(cards: List[Card], count: int) -> float:
+    def get_average_cheapest_cards(cards: list[Card], count: int) -> float:
         sorted_cards = sorted(cards, key=lambda card: card.price_cents)
         cheapest_cards = sorted_cards[:count]
         average_price = sum([card.price_cents for card in cheapest_cards])/len(cheapest_cards)
